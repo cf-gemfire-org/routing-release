@@ -8,9 +8,15 @@ packages:
 - route_registrar
 
 consumes:
+- name: route_registrar
+  type: route_registrar
 - name: nats
   type: nats
   optional: true
+
+provides:
+- name: route_registrar
+  type: route_registrar
 
 templates:
   registrar_settings.json.erb: config/registrar_settings.json
@@ -63,9 +69,11 @@ properties:
         type (optional, string, for all routes): Defaults to http, can specify http or tcp.
         uris (required, array, for http routes): When Gorouter receives a request that matches one of these URIs,
           it will forward them to the IP of the host on which route_registrar runs, and either port or tls_port.
-        port (required, integer, for all routes): Either `port` or `tls_port` are required; if both are provided, Gorouter will prefer tls_port.
-          Requests for associated URIs will be forwarded unencypted by the router to this port.
+        port (required, integer or array, for all routes): Either `port` or `tls_port` are required; if both are provided, Gorouter will prefer tls_port.
+          If integer, requests for associated URIs will be forwarded unencypted by the router to this port on all instance group VMs.
+          If array, each route from the external_port array will be forwarded to the corresponding port from this array. (Undefined behavior if instance group size != this array size.)
           The IP is determined automatically from the host on which route-registrar is run.
+
         tls_port (required, integer, for http routes): Either `port` or `tls_port` are required; if both are provided, Gorouter will prefer tls_port.
           Requests for associated URIs will be forwarded over TLS by the router to this port.
           The IP is determined automatically from the host on which route-registrar is run.
@@ -81,7 +89,9 @@ properties:
           healthcheck script exits with success, route registration heartbeat is sent. If script exits
           with error, the route is unregistered.
         router_group (required, string, for tcp routes): Name of the router group to which the TCP route should be added.
-        external_port (required, string, for tcp routes): Port that the TCP router will listen on.
+        external_port (required, string or array, for tcp routes): Port that the TCP router will listen on.
+          If string, instance group will be load balanced behind one port.
+          If array, each VM in the instance group will receive one of the ports, paired 1-to-1 by BOSH spec.index and external port. (Undefined behavior if instance group size != this array size.)
 
       health_check object
         name (required, string): Human-readable reference for the healthcheck

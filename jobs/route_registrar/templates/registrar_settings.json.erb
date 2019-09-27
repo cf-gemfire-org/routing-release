@@ -43,6 +43,25 @@
     if route['prepend_instance_index']
       route['uris'].map! { |uri| "#{spec.index}-#{uri}" }
     end
+
+    if route['port'].is_a?(Array)
+      if !route['external_port'].is_a?(Array)
+        raise "expected external port to be an array given that port is an array"
+      end
+    end
+
+    if route['external_port'].is_a?(Array)
+      if !route['port'].is_a?(Array)
+        raise "expected port to be an array given that external port is an array"
+      end
+
+      if route['external_port'].length != route['port'].length || route['external_port'].length != link('route_registrar').instances.count
+        raise "expected external_port and internal port array lengths to equal the instances count (#{link('route_registrar').instances.count})"
+      end
+
+      route['external_port'] = route['external_port'][spec.index]
+      route['port'] = route['port'][spec.index]
+    end
   end
 
   host = nil

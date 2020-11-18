@@ -1,6 +1,7 @@
 processes:
   - name: routing-api
     executable: /var/vcap/packages/routing-api/bin/routing-api
+    persistent_disk: true
     args:
     - -config
     - /var/vcap/jobs/routing-api/config/routing-api.yml

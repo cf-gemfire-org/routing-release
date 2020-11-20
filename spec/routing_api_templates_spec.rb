@@ -31,7 +31,8 @@ describe 'routing_api' do
           'password' => 'password',
           'max_open_connections' => 201,
           'max_idle_connections' => 11,
-          'connections_max_lifetime_seconds' => 3601
+          'connections_max_lifetime_seconds' => 3601,
+          'store_path' => '/var/vcap/store/routing-api'
         }
       },
       'uaa' => {
@@ -163,7 +164,8 @@ describe 'routing_api' do
                                       'skip_hostname_validation' => false,
                                       'max_open_connections' => 201,
                                       'max_idle_connections' => 11,
-                                      'connections_max_lifetime_seconds' => 3601
+                                      'connections_max_lifetime_seconds' => 3601,
+                                      'store_path' => '/var/vcap/store/routing-api'
                                     },
                                     'statsd_client_flush_interval' => '300ms',
                                     'statsd_endpoint' => 'localhost:8125',

@@ -120,6 +120,10 @@ properties:
     description: "Database name for routing api"
     example: "routing_api"
 
+  routing_api.sqldb.store_path:
+    description: "location for database file on disk"
+    default: "/var/vcap/store/routing-api"
+
   routing_api.sqldb.username:
     description: "Username used for connecting to SQL database"
   routing_api.sqldb.password:

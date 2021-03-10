@@ -10,7 +10,7 @@ if [[ -n "${PACKAGE}" ]]; then
     ./bin/test -flakeAttempts 3
   popd
 else
-  for component in gorouter cf-tcp-router multierror route-registrar routing-api routing-api-cli uaa-go-client; do
+  for component in cf-tcp-router multierror route-registrar routing-api routing-api-cli uaa-go-client; do
     pushd src/code.cloudfoundry.org/${component}
       echo "Testing component: ${component}..."
       ./bin/test --flakeAttempts=3
